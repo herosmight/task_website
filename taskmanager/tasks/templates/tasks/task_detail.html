@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}
+    {{task.title}} Detail Page
+{% endblock title %}
+
+{% block content %}
+    <a href="{% url "home" %}">Home</a>
+    <a href="{% url "edit_task" id=task.id %}">Edit Task</a>
+    <a href="{% url "complete" id=task.id %}">Complete</a>
+    <article>
+        <h1>{{task.title}}</h1>
+        <p>{{task.description}}</p>
+        <p>
+            Due: <time datetime="{{task.due_date}}">{{task.due_date}}</time>
+        </p>
+        <p>
+            {% if task.is_completed %}
+                    Completed
+                {% else %}
+                    Not Completed
+                    <form action="{% url "complete" id=task.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Mark as completed</button>
+                    </form>
+                {% endif %}
+        </p>
+    </article>
+
+    <div>
+        <form action="{% url "delete" id=task.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+    
+
+{% endblock content %}
+
